@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from "express";
+import { UserAPIRouter } from './routers/UserAPIRouter';
 
 class App {
     public express: express.Application;
@@ -10,7 +11,6 @@ class App {
         this.express = express();
     }
 
-    // 여기서 서버에 필요한 객체들을 초기화 한다.
     public async init(): Promise<void> {
         this.middleware();
         this.routes();
@@ -24,6 +24,7 @@ class App {
 
     private routes(): void {
         const router: express.Router = express.Router();
+        const userAPIRouter: UserAPIRouter = new UserAPIRouter();
 
         router.get('/', (req: Request, res: Response, next: NextFunction) => {
             res.json({
@@ -31,7 +32,7 @@ class App {
             });
         });
 
-        this.express.use('/', router);
+        this.express.use('/api/user', userAPIRouter.router);
     }
 }
 
