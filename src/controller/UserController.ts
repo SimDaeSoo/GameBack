@@ -1,12 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
-export default class Usercontroller {
+import { Request } from 'express';
+import { IInventory } from '../models/UserModel';
+export default class UserController {
     public constructor() {
-        this.inventory = this.inventory.bind(this);
+        this.getInventory = this.getInventory.bind(this);
     }
 
-    public async inventory(req: Request, res: Response, next: NextFunction): Promise<void> {
-        res.json({
-            message: 'inventory'
-        });
+    public async getInventory(req: Request): Promise<IInventory> {
+        return {
+            data: 'getInventory'
+        };
     }
 }

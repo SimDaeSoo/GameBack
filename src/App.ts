@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import { Request, Response, NextFunction } from "express";
 import { UserAPIRouter } from './routers/UserAPIRouter';
 
 class App {
@@ -23,15 +22,7 @@ class App {
     }
 
     private routes(): void {
-        const router: express.Router = express.Router();
         const userAPIRouter: UserAPIRouter = new UserAPIRouter();
-
-        router.get('/', (req: Request, res: Response, next: NextFunction) => {
-            res.json({
-                message: 'Hello World!'
-            });
-        });
-
         this.express.use('/api/user', userAPIRouter.router);
     }
 }
