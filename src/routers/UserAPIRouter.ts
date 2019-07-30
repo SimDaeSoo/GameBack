@@ -1,39 +1,22 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import BaseRouter from './BaseRouter';
 import UserController from '../controller/UserController';
 import { IInventory } from '../models/UserModel';
+import { GetInventoryRequest, GetInventoryResponse } from '../networks/requestresponse/UserRequest';
 
-export class UserAPIRouter {
-    public router: Router;
-
+export class UserAPIRouter extends BaseRouter {
     constructor() {
-        this.router = Router();
+        super();
         this.routes();
     }
 
     private async routes() {
-        // 레퍼 한번 생각.
-        this.router.get('/:userkey/inventory', async (req: Request, res: Response, next: NextFunction) => {
-            try {
-                const userkey = req.param('userkey');
-                const inventory: IInventory = await new UserController().getInventory(req);
-    
-                res.json({
-                    message: `${inventory.data} ${userkey}`
-                });
-            } catch (error) {
+        this.router.get('/:userkey/inventory', this.routeHandler<GetInventoryRequest, GetInventoryResponse>(GetInventoryRequest, this.getInventory));
+    }
 
-            }
-        });
+    private async getInventory(request: GetInventoryRequest): Promise<GetInventoryResponse> {
+        const key = request.params.userkey;
+        const data: IInventory = await new UserController().getInventory(key);
 
-        this.router.get('/:userkey', async (req: Request, res: Response, next: NextFunction) => {
-            try {
-                const userkey = req.param('userkey');
-                res.json({
-                    message: userkey
-                });
-            } catch (error) {
-
-            }
-        });
+        return new GetInventoryResponse(data);
     }
 }

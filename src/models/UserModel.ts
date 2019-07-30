@@ -1,18 +1,19 @@
 export interface IInventory {
-    data: string;
-}
-
-interface IItem {
-    id: string
+    data: Array<{
+        id: string,
+        count: number
+    }>;
 }
 
 interface ICharacter {
     id: number,
-    equip: {
-        category: string,
-        id: string
+    equips: {
+        accessory: string,
+        armor: string,
+        weapon: string
     },
-    level: number
+    level: number,
+    exp: number
 }
 
 interface IQuest {
@@ -24,19 +25,42 @@ interface IQuest {
 
 interface ILocation {
     src: string,
-    targe: string
+    target: string
+}
+
+interface ISetting {
+    sound : ISoundSetting
+}
+
+interface ISoundSetting {
+    master: number,
+    bgm: number,
+    default: number
 }
 
 interface IUser {
     inventory: IInventory,
+
     characters: Array<ICharacter>,
+
     completeQuests: Array<IQuest>,
     acceptedQuests: Array<IQuest>,
-    party: Array<number>,
-    created: Date,
-    playTime: Number,
-    location: ILocation,
-    gold: number,
+
     selectableFloor: Array<number>,
-    selectedFloor: Array<number>
+    selectedFloor: Array<number>,
+
+    setting: ISetting,
+
+    party: Array<number>,
+
+    location: ILocation,
+
+    tags: Array<string>,
+
+    cutscene: string,
+    controlCharacter: number,
+    created: Date,
+    playTime: number,
+    gold: number,
+    version: number
 }
