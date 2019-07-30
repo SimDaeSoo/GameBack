@@ -1,9 +1,10 @@
 export default class BaseResponse {
     public success: boolean = false;
+    public data: object = {};
 
-    constructor(data: any) {
+    constructor(data?: any) {
         for (let key in data) {
-            this[key] = data[key];
+            this.data[key] = data[key];
         }
     }
 }

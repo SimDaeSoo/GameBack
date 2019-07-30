@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import { UserAPIRouter } from './routers/UserAPIRouter';
+import { AuthAPIRouter } from './routers/AuthAPIRouter';
 
 class App {
     public express: express.Application;
@@ -22,8 +22,8 @@ class App {
     }
 
     private routes(): void {
-        const userAPIRouter: UserAPIRouter = new UserAPIRouter();
-        this.express.use('/api/user', userAPIRouter.router);
+        const authAPIRouter: AuthAPIRouter = new AuthAPIRouter();
+        this.express.use('/api/auth', authAPIRouter.router);
     }
 }
 

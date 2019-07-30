@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import debug from 'debug';
+import debug from 'morgan';
+import BaseResponse from '../networks/BaseResponse';
 
 export default class BaseRouter {
     public router: Router;
@@ -16,7 +17,10 @@ export default class BaseRouter {
                 const result: U = await handler(new request(req));
                 res.json(result);
             } catch (error) {
-                debug(error);
+                const result: BaseResponse = new BaseResponse();
+                result.success = false;
+                res.json(result);
+                next(error);
             }
         };
     }
