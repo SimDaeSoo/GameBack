@@ -2,12 +2,11 @@ import * as http from 'http';
 import * as debug from 'debug';
 import * as express from "express";
 import App from './App';
-import { Game } from './game/main';
 
 debug('ts-express:server');
 
 let server: http.Server;
-const port = normalizePort(3000);
+const port = normalizePort(3010);
 
 const app = new App();
 app.init().then(() => {
@@ -36,6 +35,3 @@ function onListening(): void {
     const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
     debug(`Listening on ${bind}`);
 }
-
-const game: Game = new Game();
-game.start();
