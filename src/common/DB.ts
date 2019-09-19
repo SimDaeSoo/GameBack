@@ -46,6 +46,7 @@ export default class DB {
 
             return true;
         } catch (err) {
+            console.log('Transaction Error!.');
             await connection.rollback(); // ROLLBACK
             connection.release();
         }
@@ -61,7 +62,7 @@ export default class DB {
         try {
             result = await connection.query(...[query, args]);
         } catch (err) {
-            console.log('Query Error');
+            console.log('Query Error!.');
             throw ('error');
         }
 
@@ -70,6 +71,6 @@ export default class DB {
         console.log(query, `${elapsedTimeMs} ms`);
 
         // INSERT 와 같은 쿼리는 배열이 아님. 사용하는 쪽에서 일관성있게 사용하게 하기 위해 배열로 맞춤.
-        return Array.isArray(result) ? result[0] as any[] : [result][0] as any[];
+        return Array.isArray(result) ? result as any[] : [result] as any[];
     }
 }
