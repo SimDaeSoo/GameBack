@@ -1,24 +1,37 @@
-import BaseRouter from './BaseRouter';
+import { NextFunction, Request, Response, Router } from 'express';
 import AuthController from '../controller/AuthController';
-import { ILoginResult } from '../models/AccountModel';
-import { AuthLoginRequest } from '../networks/requestresponse/AccountRequest';
-import { AuthLoginResponse } from '../networks/requestresponse/AccountResponse';
 
-export class AuthAPIRouter extends BaseRouter {
+export class AuthAPIRouter {
+    public router: Router;
+
     constructor() {
-        super();
+        this.router = Router();
         this.routes();
     }
 
     private async routes() {
-        this.router.get('/login', this.routeHandler<AuthLoginRequest, AuthLoginResponse>(AuthLoginRequest, this.login));
+        this.router.post('/login', this.login);
+        this.router.post('/register', this.register);
+        this.router.post('/clear', this.clear);
     }
 
-    private async login(request: AuthLoginRequest): Promise<AuthLoginResponse> {
-        const data: ILoginResult = await new AuthController().login();
-        const response: AuthLoginResponse = new AuthLoginResponse(data);
+    // const query: any = JSON.parse(request.query.data); // <= GET 
+    // const body: any = request.body // <= POST
+    private async login(request: Request, response: Response, next: NextFunction): Promise<void> {
+        const body: any = request.body;
+        const result: any = await AuthController.login(body);
+        response.send(result);
+    }
 
-        response.success = true;
-        return response;
+    private async register(request: Request, response: Response, next: NextFunction): Promise<void> {
+        const body: any = request.body;
+        const result: any = await AuthController.register(body);
+        response.send(result);
+    }
+
+    private async clear(request: Request, response: Response, next: NextFunction): Promise<void> {
+        const body: any = request.body;
+        const result: any = await AuthController.clear(body);
+        response.send(result);
     }
 }

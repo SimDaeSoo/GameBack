@@ -1,17 +1,23 @@
+import { NextFunction, Request, Response, Application } from 'express';
+import { AuthAPIRouter } from './routers/AuthAPIRouter';
+import { normalizePort } from '../src/utils/utils';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import { AuthAPIRouter } from './routers/AuthAPIRouter';
+import * as http from 'http';
 
 class App {
-    public express: express.Application;
+    public express: Application;
+    public server: http.Server;
+    public port: string | number | boolean;
 
     constructor() {
         this.express = express();
     }
 
-    public async init(): Promise<void> {
+    public async initialize(): Promise<void> {
         this.middleware();
+        this.setNormalizePort();
         this.routes();
     }
 
@@ -19,12 +25,29 @@ class App {
         this.express.use(logger('dev'));
         this.express.use(bodyParser.json({ limit: '10mb' }));
         this.express.use(bodyParser.urlencoded({ extended: false, limit: '10mb', parameterLimit: 1000000 }));
+
+        // CORS 문제.
+        this.express.all('*', (req: Request, res: Response, next: NextFunction) => {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
+            res.header('Access-Control-Allow-Methods', 'POST,GET');
+            next();
+        });
+    }
+
+    public setNormalizePort(): void {
+        this.port = normalizePort(3020);
     }
 
     private routes(): void {
-        const authAPIRouter: AuthAPIRouter = new AuthAPIRouter();
-        this.express.use('/api/auth', authAPIRouter.router);
+        const auth: AuthAPIRouter = new AuthAPIRouter();
+        this.express.use('/api/auth', auth.router);
+    }
+
+    public createServer(): void {
+        this.express.set('port', this.port);
+        this.server = http.createServer(this.express);
+        this.server.listen(this.port);
     }
 }
-
 export default App;

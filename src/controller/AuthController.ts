@@ -1,36 +1,22 @@
-import { ILoginResult } from '../models/AccountModel';
-import DB from '../common/DB';
+import AuthModel from '../models/AuthModel';
 
+// 여기 Return Interface 다 짜놔야겠다..
 export default class AuthController {
-    public constructor() {
-        this.login = this.login.bind(this);
+    public static async login(data: any): Promise<any> {
+        const result: any = { success: false, data: {} };
+        const loginResult: any = AuthModel.login();
+        return result;
     }
 
-    public async login(): Promise<ILoginResult> {
-        interface DataBaseResult {
-        }
-
-        // const result: DataBaseResult = DB.Instance.query<DataBaseResult>('',[]);
-
-        // await DB.Instance.transaction(async (db: DB): Promise<void> => {
-        //     db.query<DataBaseResult>('',[]);
-        //     db.query<DataBaseResult>('',[]);
-        //     throw new Error('fuck');
-        // });
-
-        const token: string = await this.makeToken('');
-        await this.setToken('', token);
-
-        return {
-            token: token
-        };
+    public static async register(data: any): Promise<any> {
+        const result: any = { success: false, data: {} };
+        const registerResult: any = AuthModel.register();
+        return result;
     }
 
-    private async setToken(userKey: string, token: string): Promise<void> {
-        // throw new Error('Set Token Error.');
-    }
-
-    private async makeToken(userKey: string): Promise<string> {
-        return 'newtoken';
+    public static async clear(data: any): Promise<any> {
+        const result: any = { success: false, data: {} };
+        const clearResult: any = AuthModel.clear();
+        return result;
     }
 }
