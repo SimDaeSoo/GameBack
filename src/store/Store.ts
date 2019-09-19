@@ -28,6 +28,7 @@ export class Store {
 
         this.serverStatuses.forEach((serverStatus: IServerStatus) => {
             if (serverStatus.address === status.address) {
+                serverStatus = status;
                 serverStatus.date = Date.now();
                 flag = false;
             }
