@@ -9,7 +9,7 @@ export interface IServerStatus {
 export class Store {
     private static _instance: Store;
     private updaterID: any;
-    public serverStatus: Array<IServerStatus> = [];
+    public serverStatuses: Array<IServerStatus> = [];
 
     constructor() {
         this.onUpdate();
@@ -26,7 +26,7 @@ export class Store {
     public applyServer(status: IServerStatus): void {
         let flag: boolean = true;
 
-        this.serverStatus.forEach((serverStatus: IServerStatus) => {
+        this.serverStatuses.forEach((serverStatus: IServerStatus) => {
             if (serverStatus.address === status.address) {
                 serverStatus.date = Date.now();
                 flag = false;
@@ -34,7 +34,7 @@ export class Store {
         });
 
         if (flag) {
-            this.serverStatus.push(Object.assign({ date: Date.now() }, status));
+            this.serverStatuses.push(Object.assign({ date: Date.now() }, status));
         }
     }
 
@@ -42,15 +42,15 @@ export class Store {
         const LIMIT: number = 1000 * 4;
         const deleteServers: Array<IServerStatus> = [];
 
-        this.serverStatus.forEach((status: IServerStatus) => {
+        this.serverStatuses.forEach((status: IServerStatus) => {
             if (Date.now() - status.date > LIMIT) {
                 deleteServers.push(status);
             }
         });
 
         deleteServers.forEach((status: IServerStatus) => {
-            const index: number = this.serverStatus.indexOf(status);
-            this.serverStatus.splice(index, 1);
+            const index: number = this.serverStatuses.indexOf(status);
+            this.serverStatuses.splice(index, 1);
         });
     }
 
@@ -62,7 +62,7 @@ export class Store {
     }
 
     private printServerStatus() {
-        this.serverStatus.forEach((status: IServerStatus) => {
+        this.serverStatuses.forEach((status: IServerStatus) => {
             console.log(`${status.address}/${status.user}user/${status.ping}ping/${status.ups}ups`);
         })
     }
