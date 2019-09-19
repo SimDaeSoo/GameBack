@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response, Application } from 'express';
 import { AuthAPIRouter } from './routers/AuthAPIRouter';
-import { normalizePort } from '../src/utils/utils';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
@@ -17,7 +16,7 @@ class App {
 
     public async initialize(): Promise<void> {
         this.middleware();
-        this.setNormalizePort();
+        this.setNormalizePort(3000);
         this.routes();
     }
 
@@ -35,8 +34,19 @@ class App {
         });
     }
 
-    public setNormalizePort(): void {
-        this.port = normalizePort(3020);
+    private setNormalizePort(port: number): void {
+        this.port = this.normalizePort(port);
+    }
+
+    private normalizePort(val: number | string): number | string | boolean {
+        const normalizedPort: number = (typeof val === "string") ? parseInt(val, 10) : val;
+        if (isNaN(normalizedPort)) {
+            return val;
+        } else if (normalizedPort >= 0) {
+            return normalizedPort;
+        } else {
+            return false;
+        }
     }
 
     private routes(): void {

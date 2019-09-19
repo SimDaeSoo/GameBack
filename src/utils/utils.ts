@@ -51,17 +51,6 @@ export function system(data: { text: string, ping?: number }) {
     }
 }
 
-export function normalizePort(val: number | string): number | string | boolean {
-    const normalizedPort: number = (typeof val === 'string') ? parseInt(val, 10) : val;
-    if (isNaN(normalizedPort)) {
-        return val;
-    } else if (normalizedPort >= 0) {
-        return normalizedPort;
-    } else {
-        return false;
-    }
-}
-
 function format(date: Date, format: string) {
     const weekName: Array<string> = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     let h;
