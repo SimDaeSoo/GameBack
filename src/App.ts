@@ -22,7 +22,7 @@ class App {
     }
 
     private middleware(): void {
-        this.express.use(logger('dev'));
+        // this.express.use(logger('dev'));
         this.express.use(bodyParser.json({ limit: '10mb' }));
         this.express.use(bodyParser.urlencoded({ extended: false, limit: '10mb', parameterLimit: 1000000 }));
 

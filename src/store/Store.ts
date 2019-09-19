@@ -57,8 +57,14 @@ export class Store {
     public onUpdate(): void {
         this.updaterID = setInterval(async () => {
             this.deleteDeadServer();
-            console.log(this.serverStatus);
-        }, 2000);
+            this.printServerStatus();
+        }, 4000);
+    }
+
+    private printServerStatus() {
+        this.serverStatus.forEach((status: IServerStatus) => {
+            console.log(`${status.address}/${status.user}user/${status.ping}ping/${status.ups}ups`);
+        })
     }
 
     public stop(): void {
