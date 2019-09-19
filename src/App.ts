@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Application } from 'express';
 import { AuthAPIRouter } from './routers/AuthAPIRouter';
+import { SocketServerRouter } from './routers/SocketServerRouter';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
@@ -16,7 +17,7 @@ class App {
 
     public async initialize(): Promise<void> {
         this.middleware();
-        this.setNormalizePort(3000);
+        this.setNormalizePort(8000);
         this.routes();
     }
 
@@ -51,7 +52,9 @@ class App {
 
     private routes(): void {
         const auth: AuthAPIRouter = new AuthAPIRouter();
+        const server: SocketServerRouter = new SocketServerRouter();
         this.express.use('/api/auth', auth.router);
+        this.express.use('/server', server.router);
     }
 
     public createServer(): void {
