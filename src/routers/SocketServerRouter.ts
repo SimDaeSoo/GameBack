@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { IServerStatus, Store } from '../store/Store';
+import { Store } from '../store/Store';
 
 export class SocketServerRouter {
     public router: Router;
