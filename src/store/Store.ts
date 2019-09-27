@@ -9,7 +9,7 @@ export interface IServerStatus {
 export class Store {
     private static _instance: Store;
     private updaterID: any;
-    public serverStatuses: Array<IServerStatus> = [];
+    public serverStatuses: Array<IServerStatus>;
 
     constructor() {
         this.onUpdate();
@@ -18,23 +18,32 @@ export class Store {
     public static get instance(): Store {
         if (!this._instance) {
             this._instance = new this();
+            this._instance.initialize();
         }
 
         return this._instance;
     }
 
+    public initialize(): void {
+        this.serverStatuses = [];
+    }
+
     public applyServer(status: IServerStatus): void {
         let flag: boolean = true;
 
-        this.serverStatuses.forEach((serverStatus: IServerStatus) => {
+        this.serverStatuses.forEach((serverStatus: IServerStatus, index: number) => {
             if (serverStatus.address === status.address) {
-                serverStatus = status;
+                serverStatus.user = status.user;
+                serverStatus.ups = status.ups;
+                serverStatus.ping = status.ping;
+                serverStatus.address = status.address;
                 serverStatus.date = Date.now();
                 flag = false;
             }
         });
 
         if (flag) {
+            console.log(`Apply Server [${status.address}]`);
             this.serverStatuses.push(Object.assign({ date: Date.now() }, status));
         }
     }
@@ -51,6 +60,7 @@ export class Store {
 
         deleteServers.forEach((status: IServerStatus) => {
             const index: number = this.serverStatuses.indexOf(status);
+            console.log(`Delete Server [${status.address}]`);
             this.serverStatuses.splice(index, 1);
         });
     }
@@ -58,14 +68,7 @@ export class Store {
     public onUpdate(): void {
         this.updaterID = setInterval(async () => {
             this.deleteDeadServer();
-            this.printServerStatus();
         }, 4000);
-    }
-
-    private printServerStatus() {
-        this.serverStatuses.forEach((status: IServerStatus) => {
-            console.log(`${status.address}/${status.user}user/${status.ping}ping/${status.ups}ups`);
-        })
     }
 
     public stop(): void {
