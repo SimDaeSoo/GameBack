@@ -1,4 +1,5 @@
 import { IServerStatus } from "../interface/define";
+import { SERVER_NAME } from "../define/serverName";
 
 export class Store {
     private static _instance: Store;
@@ -31,6 +32,7 @@ export class Store {
                 serverStatus.ups = status.ups;
                 serverStatus.ping = status.ping;
                 serverStatus.address = status.address;
+                serverStatus.name = SERVER_NAME[status.address] ? SERVER_NAME[status.address] : 'DEFAUT';
                 serverStatus.date = Date.now();
                 flag = false;
             }
@@ -38,7 +40,7 @@ export class Store {
 
         if (flag) {
             console.log(`Apply Server [${status.address}]`);
-            this.serverStatuses.push(Object.assign({ date: Date.now() }, status));
+            this.serverStatuses.push(Object.assign({ date: Date.now(), name: SERVER_NAME[status.address] ? SERVER_NAME[status.address] : 'DEFAUT' }, status));
         }
     }
 
