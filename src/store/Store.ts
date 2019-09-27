@@ -1,10 +1,4 @@
-export interface IServerStatus {
-    address: string;
-    user: number;
-    ups: number;
-    ping: number;
-    date?: number;
-}
+import { IServerStatus } from "../interface/define";
 
 export class Store {
     private static _instance: Store;
