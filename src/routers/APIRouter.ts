@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import AuthController from '../controller/AuthController';
 import { ILoginData, ILoginResult, IClearResult } from '../interface/Account';
 import { IResponse, ERROR_CODE } from '../interface/define';
+import * as fs from 'fs';
 
 export class APIRouter {
     public router: Router;
@@ -13,6 +14,22 @@ export class APIRouter {
 
     private async routes(): Promise<void> {
         this.router.get('/articles', this.articles);
+        this.router.get('/article', this.article);
+    }
+
+    private async article(request: Request, response: Response, next: NextFunction): Promise<void> {
+        const responseData: IResponse = { success: ERROR_CODE.SUCCESS, data: {} };
+        const file = await fs.readFileSync('markdown.txt', "utf8");
+        
+        responseData.data = {
+            articles: {
+                title: 'PIXI DOC',
+                contents: file,
+                date: '2019.09.19'
+            }
+        }
+
+        response.send(responseData);
     }
 
     private async articles(request: Request, response: Response, next: NextFunction): Promise<void> {
