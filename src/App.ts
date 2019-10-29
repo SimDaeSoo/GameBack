@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response, Application } from 'express';
 import { AuthAPIRouter } from './routers/AuthAPIRouter';
-import { APIRouter } from './routers/APIRouter';
 import { SocketServerRouter } from './routers/SocketServerRouter';
 import * as express from 'express';
-import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 
@@ -54,10 +52,8 @@ class App {
     private routes(): void {
         const auth: AuthAPIRouter = new AuthAPIRouter();
         const server: SocketServerRouter = new SocketServerRouter();
-        const api: APIRouter = new APIRouter();
-        // this.express.use('/api/auth', auth.router);
-        // this.express.use('/server', server.router);
-        this.express.use('/api', api.router);
+        this.express.use('/api/auth', auth.router);
+        this.express.use('/server', server.router);
     }
 
     public createServer(): void {
