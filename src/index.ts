@@ -1,9 +1,9 @@
 import * as debug from 'debug';
-import App from './App';
+import ServerApp from './ServerApp';
 
 debug('ts-express:server');
 
 // express 서버.
-const app: App = new App();
+const app: ServerApp = new ServerApp();
 app.initialize();
 app.createServer();

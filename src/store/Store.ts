@@ -39,7 +39,6 @@ export class Store {
         });
 
         if (flag) {
-            console.log(`Apply Server [${status.address}]`);
             this.serverStatuses.push(Object.assign({ date: Date.now(), name: SERVER_NAME[status.address] ? SERVER_NAME[status.address] : 'DEFAUT' }, status));
         }
     }
@@ -56,7 +55,6 @@ export class Store {
 
         deleteServers.forEach((status: IServerStatus) => {
             const index: number = this.serverStatuses.indexOf(status);
-            console.log(`Delete Server [${status.address}]`);
             this.serverStatuses.splice(index, 1);
         });
     }

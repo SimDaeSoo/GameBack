@@ -5,7 +5,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 
-class App {
+class ServerApp {
     public express: Application;
     public server: http.Server;
     public port: string | number | boolean;
@@ -62,4 +62,5 @@ class App {
         this.server.listen(this.port);
     }
 }
-export default App;
+
+export default ServerApp;
