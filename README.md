@@ -1,5 +1,6 @@
 Game Project / Back End
 =============
+Project 'ADI' Socket Manage Server(Master) . 
 
 ### How To Run? ###
 - dependency install
